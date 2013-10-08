@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ProcessObserver:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ProcessObserver_jar</output-path>
+    <root id="archive" name="ProcessObserver.jar">
+      <element id="module-output" name="ProcessObserver" />
+    </root>
+  </artifact>
+</component>

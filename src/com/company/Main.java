@@ -11,7 +11,18 @@ public class Main implements Runnable {
 
     Date date;
 
-    ProcessBuilder pb = new ProcessBuilder("tasklist","/FO","CSV");
+    static ProcessBuilder pb;
+
+    static
+    {
+     if( System.getProperty("os.name").toLowerCase().indexOf("win") >= 0 )
+        pb = new ProcessBuilder("tasklist","/FO","CSV");
+     else
+         pb = new ProcessBuilder("ps","/FO","CSV");
+    }
+
+
+    static int end_time;
 
     private class processInfo
     {
@@ -48,10 +59,17 @@ public class Main implements Runnable {
 
 
         period = Integer.valueOf(prop.getProperty("time_period"));
+        end_time = Integer.valueOf(prop.getProperty("end_time"));
         Main myMain = new Main();
         Thread observerThread = new Thread(myMain);
+        observerThread.setDaemon(true);
         observerThread.start();
-
+        try {
+            Thread.sleep(end_time*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return;
     }
 
     public void run() {
@@ -82,6 +100,7 @@ public class Main implements Runnable {
                 //---------------------------------process console reading and writing to file
 
                 fileOutputStream.close();
+                isr.close();
 
                 try {
                     Thread.sleep(1000*period);
